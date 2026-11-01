@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <!-- Mobile-first: viewport-fit=cover lets the design reach the screen edges on modern Android phones -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+  <meta name="theme-color" content="#2a1450">
+  <title>A Little World for Thirandee</title>
+
+  <!-- Fonts (optional; the game still looks fine offline thanks to the fallbacks in style.css) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@500;700&family=Nunito:wght@400;600;700&family=Playfair+Display:wght@500;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/animations.css">
+</head>
+<body>
+
+  <!-- ===== Dreamy background layers (purely decorative) ===== -->
+  <div id="bg" aria-hidden="true">
+    <div class="stars"></div>
+    <div class="glow glow-a"></div>
+    <div class="glow glow-b"></div>
+    <div class="cloud cloud-1"></div>
+    <div class="cloud cloud-2"></div>
+    <div class="cloud cloud-3"></div>
+  </div>
+  <div id="hearts-layer" aria-hidden="true"></div>
+  <div id="sparkle-layer" aria-hidden="true"></div>
+
+  <main id="app">
+
+    <!-- ===== 1. WELCOME ===== -->
+    <section class="screen active" id="screen-welcome">
+      <div class="welcome-wrap">
+        <div class="welcome-moon" aria-hidden="true"></div>
+        <p class="welcome-small" id="welcome-line1"></p>
+        <h1 class="welcome-title">A Little World<br>for <span>Thirandee</span></h1>
+        <p class="welcome-sub">Made with love by Janaka ❤️</p>
+        <button class="btn-primary pulse" id="enter-btn">Enter Our Little World</button>
+        <p class="welcome-hint">Best with sound on 🎵 (you can switch it off any time)</p>
+      </div>
+    </section>
+
+    <!-- ===== 2. HOME ===== -->
+    <section class="screen" id="screen-home">
+      <header class="home-head">
+        <p class="home-hello" id="home-hello">Hello, Thirandee</p>
+        <p class="home-note">Wander around. Nothing here is a test — everything is just for you.</p>
+        <div class="progress-wrap">
+          <div class="progress-bar"><div id="progress-fill"></div></div>
+          <span id="progress-text">0 / 8 discovered</span>
+        </div>
+      </header>
+
+      <div class="home-grid" id="home-grid"><!-- activity cards are created by main.js --></div>
+
+      <button class="daily-btn glass" id="daily-btn">
+        <span class="daily-star" aria-hidden="true"></span>
+        <span><strong>Today's little surprise</strong><br><small id="daily-sub">Tap to see what I wrote for you today</small></span>
+      </button>
+
+      <button class="final-card glass locked" id="final-card">
+        <span class="final-seal" aria-hidden="true"></span>
+        <span><strong>A Special Letter</strong><br><small id="final-sub">Discover everything in our world to unlock it</small></span>
+      </button>
+
+      <p class="home-footer">Made with love, from Kandy to Kalutara.</p>
+      <button class="reset-btn" id="reset-btn">Start all over again</button>
+    </section>
+
+    <!-- ===== 3. MEMORY CHALLENGE ===== -->
+    <section class="screen" id="screen-memory">
+      <header class="screen-head"><button class="back" data-go="home" aria-label="Back">‹</button><h2>Love Memory Challenge</h2></header>
+      <div class="screen-body">
+        <p class="lead">Find all the matching pairs. Take your time, my love.</p>
+        <div class="stat-row"><span>Moves: <b id="mem-moves">0</b></span><span>Pairs: <b id="mem-pairs">0</b>/6</span></div>
+        <div class="memory-grid" id="memory-grid"></div>
+        <button class="btn-ghost" id="mem-restart">Shuffle &amp; start again</button>
+      </div>
+    </section>
+
+    <!-- ===== 4. QUIZ ===== -->
+    <section class="screen" id="screen-quiz">
+      <header class="screen-head"><button class="back" data-go="home" aria-label="Back">‹</button><h2>How Well Do You Know Us?</h2></header>
+      <div class="screen-body" id="quiz-body"></div>
+    </section>
+
+    <!-- ===== 5. MYSTERY GIFTS ===== -->
+    <section class="screen" id="screen-gifts">
+      <header class="screen-head"><button class="back" data-go="home" aria-label="Back">‹</button><h2>The Mystery Gifts</h2></header>
+      <div class="screen-body">
+        <p class="lead">Six little boxes. Each one is different. Open them all.</p>
+        <div class="gift-grid" id="gift-grid"></div>
+        <p class="stat-row center"><span><b id="gift-count">0</b> / 6 opened</span></p>
+      </div>
+    </section>
+
+    <!-- ===== 6. CATCH THE HEARTS ===== -->
+    <section class="screen" id="screen-hearts">
+      <header class="screen-head"><button class="back" data-go="home" aria-label="Back">‹</button><h2>Catch the Hearts</h2></header>
+      <div class="screen-body game-body">
+        <div class="stat-row">
+          <span>Score: <b id="hg-score">0</b></span>
+          <span>Time: <b id="hg-time">30</b>s</span>
+          <span>Best: <b id="hg-best">0</b></span>
+        </div>
+        <div class="canvas-wrap">
+          <canvas id="hg-canvas"></canvas>
+          <div class="canvas-overlay" id="hg-overlay">
+            <p class="overlay-title">Catch the hearts</p>
+            <p class="overlay-text">Touch them with your finger before they fall.<br>Pink = 1 · Purple = 2 · Golden = 5</p>
+            <button class="btn-primary" id="hg-start">Start</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== 7. GARDEN ===== -->
+    <section class="screen" id="screen-garden">
+      <header class="screen-head"><button class="back" data-go="home" aria-label="Back">‹</button><h2>Our Little Garden</h2></header>
+      <div class="screen-body">
+        <p class="lead" id="garden-lead">Everything you discover grows something here.</p>
+        <div class="garden-scene" id="garden-scene"></div>
+        <p class="stat-row center"><span><b id="garden-count">0</b> / 13 grown</span></p>
+        <p class="tiny center">Tap a flower to read what it means.</p>
+      </div>
+    </section>
+
+    <!-- ===== 8. SECRET LETTERS ===== -->
+    <section class="screen" id="screen-letters">
+      <header class="screen-head"><button class="back" data-go="home" aria-label="Back">‹</button><h2>Secret Letters</h2></header>
+      <div class="screen-body">
+        <p class="lead">Little letters I wrote when I missed you. Tap an envelope.</p>
+        <div class="letter-grid" id="letter-grid"></div>
+      </div>
+    </section>
+
+    <!-- ===== 9. VIRTUAL HUG ===== -->
+    <section class="screen" id="screen-hug">
+      <header class="screen-head"><button class="back" data-go="home" aria-label="Back">‹</button><h2>Virtual Hug</h2></header>
+      <div class="screen-body center-col">
+        <div class="hug-stage" id="hug-stage"></div>
+        <p class="hug-message" id="hug-message">Two hearts, two cities, one big hug waiting.</p>
+        <button class="btn-primary" id="hug-btn">Send me a hug</button>
+      </div>
+    </section>
+
+    <!-- ===== 10. DISTANCE ===== -->
+    <section class="screen" id="screen-distance">
+      <header class="screen-head"><button class="back" data-go="home" aria-label="Back">‹</button><h2>Distance Doesn't Matter</h2></header>
+      <div class="screen-body center-col">
+        <div class="map-wrap" id="map-wrap"></div>
+        <p class="hug-message" id="map-message">Tap the glowing heart.</p>
+        <button class="btn-ghost" id="map-send">Send a heart across the miles</button>
+      </div>
+    </section>
+
+    <!-- ===== 11. GALLERY ===== -->
+    <section class="screen" id="screen-gallery">
+      <header class="screen-head"><button class="back" data-go="home" aria-label="Back">‹</button><h2>Our Memories</h2></header>
+      <div class="screen-body">
+        <p class="lead">Pictures of us, saved right here on this phone.</p>
+        <div class="gallery-grid" id="gallery-grid"></div>
+        <label class="btn-ghost file-btn">Add a photo
+          <input type="file" id="gallery-input" accept="image/*" multiple hidden>
+        </label>
+        <p class="tiny center">Photos you add stay only on this phone (nothing is uploaded anywhere).</p>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ===== Shared modal (letters, gifts, results) ===== -->
+  <div id="modal" class="modal" aria-hidden="true">
+    <div class="modal-card" id="modal-card" role="dialog" aria-modal="true">
+      <button class="modal-close" id="modal-close" aria-label="Close">×</button>
+      <div id="modal-content"></div>
+    </div>
+  </div>
+
+  <div id="toast" class="toast" role="status"></div>
+  <button id="sound-toggle" class="sound-toggle" aria-label="Toggle sound">♪</button>
+
+  <!-- Script order matters: main.js defines the shared helpers (window.LW), the rest plug into it. -->
+  <script src="js/main.js"></script>
+  <script src="js/memory.js"></script>
+  <script src="js/quiz.js"></script>
+  <script src="js/heart-game.js"></script>
+  <script src="js/garden.js"></script>
+  <script src="js/surprises.js"></script>
+  <script>LW.boot();</script>
+</body>
+</html>
